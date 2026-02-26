@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IconLibrary - Browse Icons</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --bg: #f8fafc;
+            --bg-alt: #ffffff;
+            --text: #0f172a;
+            --text-light: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --primary-light: #a5b4fc;
+            --bg: #0f172a;
+            --bg-alt: #1e293b;
+            --text: #f1f5f9;
+            --text-light: #94a3b8;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --card-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .theme-toggle input {
+            display: none;
+        }
+
+        .toggle-switch {
+            width: 48px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 12px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        input:checked + .toggle-switch {
+            background: var(--primary);
+        }
+
+        input:checked + .toggle-switch::before {
+            transform: translateX(24px);
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .search-section {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: var(--card-bg);
+            color: var(--text);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 1rem center;
+            background-size: 1.25rem;
+        }
+
+        .categories {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .category-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            background: var(--card-bg);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .category-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .icon-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-preview {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-preview img {
+            max-width: 64px;
+            max-height: 64px;
+            object-fit: contain;
+        }
+
+        .icon-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            word-break: break-word;
+            font-size: 0.95rem;
+        }
+
+        .icon-category {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .icon-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .icon-card:hover .icon-actions {
+            opacity: 1;
+        }
+
+        .icon-action-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--card-bg);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.2s;
+        }
+
+        .icon-action-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .icon-action-btn.download:hover {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .modal-preview {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-alt);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-preview img {
+            max-width: 128px;
+            max-height: 128px;
+            object-fit: contain;
+        }
+
+        .icon-details {
+            background: var(--bg-alt);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .icon-details p {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .code-section {
+            margin: 1.5rem 0;
+        }
+
+        .code-section h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .code-preview {
+            background: var(--bg-alt);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85rem;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .download-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .download-btn:hover {
+            opacity: 0.9;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-icons"></i>
+                <span>IconLibrary</span>
+            </div>
+
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="admin.html" class="nav-link">
+                    <i class="fas fa-lock"></i> Admin
+                </a>
+                <label class="theme-toggle">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="toggle-switch"></span>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="search-section">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search icons by name or category...">
+        </div>
+
+        <div class="categories" id="categories">
+            <button class="category-btn active" onclick="filterCategory('all')">All</button>
+            <button class="category-btn" onclick="filterCategory('icon')">Icon</button>
+            <button class="category-btn" onclick="filterCategory('logo')">Logo</button>
+            <button class="category-btn" onclick="filterCategory('image')">Image</button>
+            <button class="category-btn" onclick="filterCategory('video')">Video</button>
+        </div>
+
+        <div class="icon-grid" id="iconGrid">
+            <!-- Icons will be loaded here -->
+        </div>
+    </main>
+
+    <!-- Preview Modal with Copy and Download -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Icon Preview</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="modal-preview" id="modalPreview">
+                <img id="modalImage" src="" alt="Preview">
+            </div>
+
+            <div class="icon-details" id="iconDetails">
+                <p><strong>Name:</strong> <span id="modalName"></span></p>
+                <p><strong>Category:</strong> <span id="modalCategory"></span></p>
+                <p><strong>Size:</strong> <span id="modalSize"></span></p>
+                <p><strong>Path:</strong> <span id="modalPath"></span></p>
+            </div>
+
+            <div class="code-section">
+                <h3>HTML Code</h3>
+                <div class="code-preview" id="htmlCode"></div>
+                <button class="copy-btn" onclick="copyToClipboard('html')">
+                    <i class="fas fa-copy"></i> Copy HTML
+                </button>
+            </div>
+
+            <div class="code-section">
+                <h3>Markdown Code</h3>
+                <div class="code-preview" id="markdownCode"></div>
+                <button class="copy-btn" onclick="copyToClipboard('markdown')">
+                    <i class="fas fa-copy"></i> Copy Markdown
+                </button>
+            </div>
+
+            <div class="modal-actions">
+                <button class="download-btn" onclick="downloadIcon()">
+                    <i class="fas fa-download"></i> Download Icon
+                </button>
+                <button class="copy-btn" onclick="closeModal()" style="background: var(--text-light);">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Copied to clipboard!</div>
+
+    <div class="footer">
+        <p>&copy; 2024 IconLibrary. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        themeToggle.checked = savedTheme === 'dark';
+
+        themeToggle.addEventListener('change', () => {
+            const theme = themeToggle.checked ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        });
+
+        // Initialize icons with sample data including folder.png
+        let icons = [];
+        let currentFilter = 'all';
+        let currentPreviewIcon = null;
+
+        // Load icons from localStorage or use sample data
+        function loadIconsFromStorage() {
+            const stored = localStorage.getItem('icons');
+            if (stored) {
+                icons = JSON.parse(stored);
+            } else {
+                // Sample icons for demo
+                icons = [
+                    {
+                        id: 1,
+                        name: 'folder.png',
+                        mainCategory: 'image',
+                        subCategory: 'human',
+                        fileData: 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
+                        size: '24 KB',
+                        path: 'C:\\Users\\hp\\Music\\Projects\\Icon-png-file\\folder.png'
+                    },
+                    {
+                        id: 2,
+                        name: 'pizza-icon.png',
+                        mainCategory: 'icon',
+                        subCategory: 'food',
+                        fileData: 'https://cdn-icons-png.flaticon.com/512/1046/1046781.png',
+                        size: '12 KB'
+                    },
+                    {
+                        id: 3,
+                        name: 'cat-icon.png',
+                        mainCategory: 'image',
+                        subCategory: 'animal',
+                        fileData: 'https://cdn-icons-png.flaticon.com/512/616/616430.png',
+                        size: '18 KB'
+                    },
+                    {
+                        id: 4,
+                        name: 'video-play.png',
+                        mainCategory: 'video',
+                        subCategory: 'news',
+                        fileData: 'https://cdn-icons-png.flaticon.com/512/3170/3170733.png',
+                        size: '15 KB'
+                    },
+                    {
+                        id: 5,
+                        name: 'logo-design.png',
+                        mainCategory: 'logo',
+                        subCategory: 'art',
+                        fileData: 'https://cdn-icons-png.flaticon.com/512/1055/1055683.png',
+                        size: '22 KB'
+                    }
+                ];
+            }
+            loadIcons();
+        }
+
+        function loadIcons() {
+            const grid = document.getElementById('iconGrid');
+            let filtered = icons;
+
+            if (currentFilter !== 'all') {
+                filtered = icons.filter(i => i.mainCategory === currentFilter);
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem;">No icons found</div>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(icon => {
+                html += `
+                    <div class="icon-card">
+                        <div class="icon-preview">
+                            <img src="${icon.fileData || 'https://via.placeholder.com/64'}" alt="${icon.name}">
+                        </div>
+                        <div class="icon-name">${icon.name}</div>
+                        <div class="icon-category">${icon.mainCategory} / ${icon.subCategory}</div>
+                        <div class="icon-actions">
+                            <button class="icon-action-btn" onclick="event.stopPropagation(); previewIcon(${icon.id})">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="icon-action-btn" onclick="event.stopPropagation(); copyIconHtml(${icon.id})">
+                                <i class="fas fa-code"></i> HTML
+                            </button>
+                            <button class="icon-action-btn download" onclick="event.stopPropagation(); downloadIconById(${icon.id})">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+        }
+
+        function filterCategory(category) {
+            currentFilter = category;
+            
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            loadIcons();
+        }
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.icon-card');
+            
+            cards.forEach(card => {
+                const name = card.querySelector('.icon-name').textContent.toLowerCase();
+                const category = card.querySelector('.icon-category').textContent.toLowerCase();
+                card.style.display = (name.includes(query) || category.includes(query)) ? '' : 'none';
+            });
+        });
+
+        // Preview Icon with Modal
+        function previewIcon(id) {
+            const icon = icons.find(i => i.id == id);
+            if (!icon) return;
+            
+            currentPreviewIcon = icon;
+            
+            // Set modal content
+            document.getElementById('modalTitle').textContent = icon.name;
+            document.getElementById('modalImage').src = icon.fileData || 'https://via.placeholder.com/128';
+            document.getElementById('modalName').textContent = icon.name;
+            document.getElementById('modalCategory').textContent = `${icon.mainCategory} / ${icon.subCategory}`;
+            document.getElementById('modalSize').textContent = icon.size || 'Unknown';
+            document.getElementById('modalPath').textContent = icon.path || 'Local file';
+            
+            // Generate HTML code
+            const htmlCode = `<img src="${icon.fileData || icon.path}" alt="${icon.name}" width="32" height="32">`;
+            document.getElementById('htmlCode').textContent = htmlCode;
+            
+            // Generate Markdown code
+            const markdownCode = `![${icon.name}](${icon.fileData || icon.path})`;
+            document.getElementById('markdownCode').textContent = markdownCode;
+            
+            // Show modal
+            document.getElementById('previewModal').classList.add('active');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(type) {
+            if (!currentPreviewIcon) return;
+            
+            let text = '';
+            if (type === 'html') {
+                text = `<img src="${currentPreviewIcon.fileData || currentPreviewIcon.path}" alt="${currentPreviewIcon.name}" width="32" height="32">`;
+            } else if (type === 'markdown') {
+                text = `![${currentPreviewIcon.name}](${currentPreviewIcon.fileData || currentPreviewIcon.path})`;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`${type.toUpperCase()} copied to clipboard!`);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        }
+
+        // Copy HTML directly from card
+        function copyIconHtml(id) {
+            const icon = icons.find(i => i.id == id);
+            if (!icon) return;
+            
+            const html = `<img src="${icon.fileData || icon.path}" alt="${icon.name}" width="32" height="32">`;
+            
+            navigator.clipboard.writeText(html).then(() => {
+                showToast('HTML copied to clipboard!');
+            });
+        }
+
+        // Download icon
+        function downloadIcon() {
+            if (!currentPreviewIcon) return;
+            downloadFile(currentPreviewIcon);
+        }
+
+        function downloadIconById(id) {
+            const icon = icons.find(i => i.id == id);
+            if (icon) {
+                downloadFile(icon);
+            }
+        }
+
+        function downloadFile(icon) {
+            // Create a downloadable file
+            fetch(icon.fileData)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = icon.name;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    showToast(`Downloading ${icon.name}`);
+                })
+                .catch(() => {
+                    // If fetch fails, create a dummy download
+                    const content = `Sample icon: ${icon.name}`;
+                    const blob = new Blob([content], { type: 'text/plain' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = icon.name || 'icon.txt';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    showToast(`Downloading ${icon.name}`);
+                });
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('previewModal').classList.remove('active');
+            currentPreviewIcon = null;
+        }
+
+        // Show toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Close modal on outside click
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('previewModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Load icons on page load
+        loadIconsFromStorage();
+    </script>
+</body>
+</html>

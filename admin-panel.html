@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IconLibrary - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --bg: #f8fafc;
+            --bg-alt: #ffffff;
+            --text: #0f172a;
+            --text-light: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --primary-light: #a5b4fc;
+            --bg: #0f172a;
+            --bg-alt: #1e293b;
+            --text: #f1f5f9;
+            --text-light: #94a3b8;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --card-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .admin-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-light);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .theme-toggle input {
+            display: none;
+        }
+
+        .toggle-switch {
+            width: 48px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 12px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        input:checked + .toggle-switch {
+            background: var(--primary);
+        }
+
+        input:checked + .toggle-switch::before {
+            transform: translateX(24px);
+        }
+
+        /* Main Layout */
+        .main {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .admin-info {
+            text-align: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .admin-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .admin-role {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            background: var(--bg-alt);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .menu-item {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: background 0.2s;
+        }
+
+        .menu-item:hover {
+            background: var(--bg-alt);
+        }
+
+        .menu-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .menu-item i {
+            width: 20px;
+        }
+
+        /* Content Area */
+        .content {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .file-info {
+            background: var(--bg-alt);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-alt);
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .category-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-alt);
+            color: var(--text);
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem 0.5rem;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .icon-preview-small {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: none;
+            cursor: pointer;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .action-btn.edit:hover {
+            background: var(--warning);
+            color: white;
+        }
+
+        .action-btn.delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        /* Search */
+        .search-box {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-alt);
+            color: var(--text);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Categories */
+        .category-tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: var(--primary-light);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-icons"></i>
+                <span>IconLibrary Admin</span>
+            </div>
+
+            <div class="header-actions">
+                <div class="admin-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span id="adminNameDisplay">Admin</span>
+                </div>
+
+                <label class="theme-toggle">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="toggle-switch"></span>
+                </label>
+
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="admin-info">
+                <div class="admin-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="admin-name" id="sidebarAdminName">Administrator</div>
+                <div class="admin-role">Super Admin</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="totalIcons">0</div>
+                    <div class="stat-label">Total Icons</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalCategories">9</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+            </div>
+
+            <div class="menu-item active" onclick="showSection('upload')">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Upload Icon</span>
+            </div>
+            <div class="menu-item" onclick="showSection('manage')">
+                <i class="fas fa-edit"></i>
+                <span>Manage Icons</span>
+            </div>
+            <div class="menu-item" onclick="showSection('categories')">
+                <i class="fas fa-tags"></i>
+                <span>Categories</span>
+            </div>
+            <div class="menu-item" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <section class="content" id="contentArea">
+            <!-- Upload Section (Default) -->
+            <div id="uploadSection">
+                <div class="content-header">
+                    <h2 class="content-title">Upload New Icon</h2>
+                </div>
+
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Click to upload or drag and drop</h3>
+                    <p>PNG, JPG, SVG, GIF (Max 5MB)</p>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                </div>
+
+                <div id="filePreview" style="display: none;"></div>
+
+                <form id="uploadForm">
+                    <div class="form-group">
+                        <label>Icon Name</label>
+                        <input type="text" class="form-control" id="iconName" placeholder="Enter icon name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="category-select" id="iconCategory" required>
+                            <optgroup label="Icon">
+                                <option value="icon-food">Food</option>
+                                <option value="icon-info">Info</option>
+                                <option value="icon-art">Art</option>
+                            </optgroup>
+                            <optgroup label="Logo">
+                                <option value="logo-company">Company</option>
+                                <option value="logo-brand">Brand</option>
+                                <option value="logo-product">Product</option>
+                            </optgroup>
+                            <optgroup label="Image">
+                                <option value="image-human">Human</option>
+                                <option value="image-animal">Animal</option>
+                                <option value="image-country">Country</option>
+                            </optgroup>
+                            <optgroup label="Video">
+                                <option value="video-news">News</option>
+                                <option value="video-promotion">Promotion</option>
+                                <option value="video-funny">Funny</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tags (comma separated)</label>
+                        <input type="text" class="form-control" id="iconTags" placeholder="e.g., food, pizza, italian">
+                    </div>
+
+                    <button type="button" class="btn btn-success" onclick="uploadIcon()" style="width: 100%;">
+                        <i class="fas fa-save"></i> Save Icon
+                    </button>
+                </form>
+            </div>
+
+            <!-- Manage Icons Section -->
+            <div id="manageSection" style="display: none;">
+                <div class="content-header">
+                    <h2 class="content-title">Manage Icons</h2>
+                </div>
+
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchIcons" placeholder="Search icons..." onkeyup="searchIcons()">
+                </div>
+
+                <div class="table-container">
+                    <table id="iconsTable">
+                        <thead>
+                            <tr>
+                                <th>Preview</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Size</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="iconsTableBody">
+                            <!-- Icons will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Categories Section -->
+            <div id="categoriesSection" style="display: none;">
+                <div class="content-header">
+                    <h2 class="content-title">Categories</h2>
+                    <button class="btn btn-primary" onclick="showAddCategoryModal()">
+                        <i class="fas fa-plus"></i> Add Category
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Main Category</th>
+                                <th>Sub Category</th>
+                                <th>Icon Count</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesTableBody">
+                            <!-- Categories will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settingsSection" style="display: none;">
+                <div class="content-header">
+                    <h2 class="content-title">Admin Settings</h2>
+                </div>
+
+                <div class="form-group">
+                    <label>Change Password</label>
+                    <input type="password" class="form-control" placeholder="New password">
+                </div>
+
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" class="form-control" placeholder="Confirm password">
+                </div>
+
+                <button class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Password
+                </button>
+
+                <hr style="margin: 2rem 0; border-color: var(--border);">
+
+                <h3 style="margin-bottom: 1rem;">Storage Settings</h3>
+                <div class="form-group">
+                    <label>Max File Size (MB)</label>
+                    <input type="number" class="form-control" value="5">
+                </div>
+
+                <div class="form-group">
+                    <label>Allowed File Types</label>
+                    <select class="category-select" multiple>
+                        <option selected>PNG</option>
+                        <option selected>JPG</option>
+                        <option selected>SVG</option>
+                        <option selected>GIF</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Edit Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Icon</h3>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            
+            <form id="editForm">
+                <div class="form-group">
+                    <label>Icon Name</label>
+                    <input type="text" class="form-control" id="editName">
+                </div>
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="category-select" id="editCategory">
+                        <optgroup label="Icon">
+                            <option value="icon-food">Food</option>
+                            <option value="icon-info">Info</option>
+                            <option value="icon-art">Art</option>
+                        </optgroup>
+                        <optgroup label="Logo">
+                            <option value="logo-company">Company</option>
+                            <option value="logo-brand">Brand</option>
+                            <option value="logo-product">Product</option>
+                        </optgroup>
+                        <optgroup label="Image">
+                            <option value="image-human">Human</option>
+                            <option value="image-animal">Animal</option>
+                            <option value="image-country">Country</option>
+                        </optgroup>
+                        <optgroup label="Video">
+                            <option value="video-news">News</option>
+                            <option value="video-promotion">Promotion</option>
+                            <option value="video-funny">Funny</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tags</label>
+                    <input type="text" class="form-control" id="editTags">
+                </div>
+
+                <button type="button" class="btn btn-success" onclick="saveEdit()" style="width: 100%;">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Category</h3>
+                <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
+            </div>
+            
+            <form>
+                <div class="form-group">
+                    <label>Main Category</label>
+                    <select class="category-select" id="mainCategory">
+                        <option value="icon">Icon</option>
+                        <option value="logo">Logo</option>
+                        <option value="image">Image</option>
+                        <option value="video">Video</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Sub Category Name</label>
+                    <input type="text" class="form-control" id="subCategoryName" placeholder="e.g., Animals">
+                </div>
+
+                <button type="button" class="btn btn-success" onclick="addCategory()" style="width: 100%;">
+                    <i class="fas fa-plus"></i> Add Category
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Action completed successfully!</div>
+
+    <script>
+        // Initialize
+        let icons = JSON.parse(localStorage.getItem('icons')) || [];
+        let currentEditId = null;
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        themeToggle.checked = savedTheme === 'dark';
+
+        themeToggle.addEventListener('change', () => {
+            const theme = themeToggle.checked ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        });
+
+        // Check authentication
+        function checkAuth() {
+            if (localStorage.getItem('isAdmin') !== 'true') {
+                window.location.href = 'admin.html';
+            }
+        }
+        checkAuth();
+
+        // Set admin name
+        const adminName = localStorage.getItem('adminName') || 'Admin';
+        document.getElementById('adminNameDisplay').textContent = adminName;
+        document.getElementById('sidebarAdminName').textContent = adminName;
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('rememberAdmin');
+            window.location.href = 'index.html';
+        }
+
+        // Show section
+        function showSection(section) {
+            // Update menu
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.menu-item').classList.add('active');
+
+            // Hide all sections
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('manageSection').style.display = 'none';
+            document.getElementById('categoriesSection').style.display = 'none';
+            document.getElementById('settingsSection').style.display = 'none';
+
+            // Show selected section
+            document.getElementById(section + 'Section').style.display = 'block';
+
+            if (section === 'manage') {
+                loadIconsTable();
+            } else if (section === 'categories') {
+                loadCategoriesTable();
+            }
+        }
+
+        // Upload Area
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        let uploadedFile = null;
+        let fileDataUrl = null;
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', (e) => e.preventDefault());
+        uploadArea.addEventListener('drop', handleFileDrop);
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleFileDrop(e) {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            processFile(file);
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            processFile(file);
+        }
+
+        function processFile(file) {
+            if (file && file.type.startsWith('image/')) {
+                uploadedFile = file;
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    fileDataUrl = e.target.result;
+                    document.getElementById('filePreview').style.display = 'block';
+                    document.getElementById('filePreview').innerHTML = `
+                        <div class="file-info">
+                            <span><i class="fas fa-check-circle" style="color: var(--success);"></i> ${file.name}</span>
+                            <span>${(file.size / 1024).toFixed(1)} KB</span>
+                        </div>
+                    `;
+                    uploadArea.style.borderColor = 'var(--success)';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Upload Icon
+        function uploadIcon() {
+            const name = document.getElementById('iconName').value.trim();
+            const category = document.getElementById('iconCategory').value;
+            const tags = document.getElementById('iconTags').value;
+
+            if (!name) {
+                alert('Please enter icon name');
+                return;
+            }
+
+            if (!uploadedFile) {
+                alert('Please select an image file');
+                return;
+            }
+
+            const [mainCategory, subCategory] = category.split('-');
+
+            const newIcon = {
+                id: Date.now(),
+                name: name,
+                mainCategory: mainCategory,
+                subCategory: subCategory,
+                tags: tags.split(',').map(t => t.trim()),
+                fileData: fileDataUrl,
+                fileName: uploadedFile.name,
+                fileSize: (uploadedFile.size / 1024).toFixed(1) + ' KB',
+                date: new Date().toLocaleDateString(),
+                type: 'image'
+            };
+
+            icons.push(newIcon);
+            localStorage.setItem('icons', JSON.stringify(icons));
+
+            // Update stats
+            document.getElementById('totalIcons').textContent = icons.length;
+
+            // Clear form
+            document.getElementById('iconName').value = '';
+            document.getElementById('iconTags').value = '';
+            document.getElementById('filePreview').style.display = 'none';
+            uploadedFile = null;
+            fileDataUrl = null;
+            uploadArea.style.borderColor = '';
+
+            showToast('Icon uploaded successfully!');
+        }
+
+        // Load Icons Table
+        function loadIconsTable() {
+            const tbody = document.getElementById('iconsTableBody');
+            let html = '';
+
+            icons.forEach(icon => {
+                const mainCat = getMainCategoryName(icon.mainCategory);
+                const subCat = getSubCategoryName(icon.mainCategory, icon.subCategory);
+
+                html += `
+                    <tr>
+                        <td>
+                            <img src="${icon.fileData || 'https://via.placeholder.com/40'}" 
+                                 class="icon-preview-small" alt="${icon.name}">
+                        </td>
+                        <td>${icon.name}</td>
+                        <td><span class="category-tag">${mainCat} / ${subCat}</span></td>
+                        <td>${icon.date || 'N/A'}</td>
+                        <td>${icon.fileSize || 'N/A'}</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn edit" onclick="editIcon(${icon.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="deleteIcon(${icon.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html || '<tr><td colspan="6" style="text-align: center;">No icons found</td></tr>';
+        }
+
+        // Load Categories Table
+        function loadCategoriesTable() {
+            const categories = [
+                { main: 'Icon', subs: ['Food', 'Info', 'Art'] },
+                { main: 'Image', subs: ['Human', 'Animal', 'Country'] },
+                { main: 'logo', subs: ['Company', 'Brand', 'Product'] },
+                { main: 'Video', subs: ['News', 'Promotion', 'Funny'] }
+            ];
+
+            const tbody = document.getElementById('categoriesTableBody');
+            let html = '';
+
+            categories.forEach(cat => {
+                cat.subs.forEach(sub => {
+                    const count = icons.filter(i => 
+                        i.mainCategory === cat.main.toLowerCase() && 
+                        i.subCategory === sub.toLowerCase()
+                    ).length;
+
+                    html += `
+                        <tr>
+                            <td>${cat.main}</td>
+                            <td>${sub}</td>
+                            <td>${count}</td>
+                            <td>
+                                <button class="action-btn edit" onclick="editCategory('${cat.main}', '${sub}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="deleteCategory('${cat.main}', '${sub}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        // Helper functions for category names
+        function getMainCategoryName(main) {
+            const names = { icon: 'Icon', image: 'Image', video: 'Video',logo: 'logo' };
+            return names[main] || main;
+        }
+
+        function getSubCategoryName(main, sub) {
+            const names = {
+                icon: { food: 'Food', info: 'Info', art: 'Art' },
+                image: { human: 'Human', animal: 'Animal', country: 'Country' },
+                video: { news: 'News', promotion: 'Promotion', funny: 'Funny' },
+                logo: { company: 'Company', brand: 'Brand', product: 'Product' }
+            };
+            return names[main]?.[sub] || sub;
+        }
+
+        // Search Icons
+        function searchIcons() {
+            const query = document.getElementById('searchIcons').value.toLowerCase();
+            const rows = document.querySelectorAll('#iconsTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        // Edit Icon
+        function editIcon(id) {
+            const icon = icons.find(i => i.id === id);
+            if (!icon) return;
+
+            currentEditId = id;
+            document.getElementById('editName').value = icon.name;
+            document.getElementById('editCategory').value = `${icon.mainCategory}-${icon.subCategory}`;
+            document.getElementById('editTags').value = (icon.tags || []).join(', ');
+            
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        // Save Edit
+        function saveEdit() {
+            const icon = icons.find(i => i.id === currentEditId);
+            if (!icon) return;
+
+            icon.name = document.getElementById('editName').value;
+            const [mainCategory, subCategory] = document.getElementById('editCategory').value.split('-');
+            icon.mainCategory = mainCategory;
+            icon.subCategory = subCategory;
+            icon.tags = document.getElementById('editTags').value.split(',').map(t => t.trim());
+
+            localStorage.setItem('icons', JSON.stringify(icons));
+            closeEditModal();
+            loadIconsTable();
+            showToast('Icon updated successfully!');
+        }
+
+        // Delete Icon
+        function deleteIcon(id) {
+            if (confirm('Are you sure you want to delete this icon?')) {
+                icons = icons.filter(i => i.id !== id);
+                localStorage.setItem('icons', JSON.stringify(icons));
+                document.getElementById('totalIcons').textContent = icons.length;
+                loadIconsTable();
+                showToast('Icon deleted successfully!');
+            }
+        }
+
+        // Close Edit Modal
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            currentEditId = null;
+        }
+
+        // Category Modal
+        function showAddCategoryModal() {
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').classList.remove('active');
+        }
+
+        function addCategory() {
+            const mainCat = document.getElementById('mainCategory').value;
+            const subCat = document.getElementById('subCategoryName').value;
+
+            if (!subCat) {
+                alert('Please enter sub category name');
+                return;
+            }
+
+            // In a real app, this would save to database
+            showToast(`Category ${mainCat}/${subCat} added!`);
+            closeCategoryModal();
+        }
+
+        // Show Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Initialize stats
+        document.getElementById('totalIcons').textContent = icons.length;
+    </script>
+</body>
+</html>

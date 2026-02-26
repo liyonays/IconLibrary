@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Library - Working Download & Copy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .header {
+            background: var(--card);
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .main {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-item {
+            padding: 0.6rem 1rem;
+            margin-bottom: 0.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .category-item:hover {
+            background: var(--border);
+        }
+
+        .category-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .category-item .count {
+            margin-left: auto;
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .subcategory {
+            margin-left: 2rem;
+        }
+
+        /* Add Item Form */
+        .add-item-form {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .category-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+        }
+
+        .upload-area i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            opacity: 0.8;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            background: var(--border);
+            border-radius: 6px;
+        }
+
+        .btn-icon:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            opacity: 0.9;
+        }
+
+        /* Search */
+        .search-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 1rem center;
+            background-size: 1.25rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .clear-filters {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Icon Grid */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .icon-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+
+        .icon-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .icon-category-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            background: var(--primary);
+            color: white;
+        }
+
+        .icon-preview {
+            font-size: 3rem;
+            margin: 1rem 0;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-preview img {
+            max-width: 64px;
+            max-height: 64px;
+            object-fit: contain;
+        }
+
+        .icon-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            word-break: break-word;
+        }
+
+        .icon-category {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        .icon-actions {
+            display: flex;
+            gap: 0.25rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .icon-action-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--card);
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.2s;
+        }
+
+        .icon-action-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination-btn {
+            min-width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .pagination-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .code-section {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .code-preview {
+            background: var(--card);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin: 0.5rem 0;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .download-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Loading animation */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-icons"></i>
+                <span>Icon Library - Working Download & Copy</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <!-- Categories -->
+            <div class="sidebar-section">
+                <h3><i class="fas fa-sitemap"></i> Categories</h3>
+                <ul class="category-list" id="categoryList">
+                    <li class="category-item active" onclick="filterByCategory('all', 'all')">
+                        <i class="fas fa-folder-open"></i>
+                        <span>All Items</span>
+                        <span class="count" id="totalCount">0</span>
+                    </li>
+                    
+                    <li class="category-item" onclick="toggleMainCategory('icon')">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>Icon</span>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </li>
+                    <div id="icon-subcategories" class="subcategories">
+                        <li class="subcategory category-item" onclick="filterByCategory('icon', 'food')">
+                            <i class="fas fa-utensils"></i>
+                            <span>Food</span>
+                            <span class="count" id="count-icon-food">0</span>
+                        </li>
+                        <li class="subcategory category-item" onclick="filterByCategory('icon', 'info')">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Info</span>
+                            <span class="count" id="count-icon-info">0</span>
+                        </li>
+                        <li class="subcategory category-item" onclick="filterByCategory('icon', 'art')">
+                            <i class="fas fa-palette"></i>
+                            <span>Art</span>
+                            <span class="count" id="count-icon-art">0</span>
+                        </li>
+                    </div>
+
+                    <li class="category-item" onclick="toggleMainCategory('image')">
+                        <i class="fas fa-image"></i>
+                        <span>Image</span>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </li>
+                    <div id="image-subcategories" class="subcategories">
+                        <li class="subcategory category-item" onclick="filterByCategory('image', 'human')">
+                            <i class="fas fa-user"></i>
+                            <span>Human</span>
+                            <span class="count" id="count-image-human">0</span>
+                        </li>
+                        <li class="subcategory category-item" onclick="filterByCategory('image', 'animal')">
+                            <i class="fas fa-paw"></i>
+                            <span>Animal</span>
+                            <span class="count" id="count-image-animal">0</span>
+                        </li>
+                        <li class="subcategory category-item" onclick="filterByCategory('image', 'country')">
+                            <i class="fas fa-flag"></i>
+                            <span>Country</span>
+                            <span class="count" id="count-image-country">0</span>
+                        </li>
+                    </div>
+
+                    <li class="category-item" onclick="toggleMainCategory('video')">
+                        <i class="fas fa-video"></i>
+                        <span>Video</span>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </li>
+                    <div id="video-subcategories" class="subcategories">
+                        <li class="subcategory category-item" onclick="filterByCategory('video', 'news')">
+                            <i class="fas fa-newspaper"></i>
+                            <span>News</span>
+                            <span class="count" id="count-video-news">0</span>
+                        </li>
+                        <li class="subcategory category-item" onclick="filterByCategory('video', 'promotion')">
+                            <i class="fas fa-bullhorn"></i>
+                            <span>Promotion</span>
+                            <span class="count" id="count-video-promotion">0</span>
+                        </li>
+                        <li class="subcategory category-item" onclick="filterByCategory('video', 'funny')">
+                            <i class="fas fa-laugh"></i>
+                            <span>Funny</span>
+                            <span class="count" id="count-video-funny">0</span>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+
+            <!-- Add New Item Form -->
+            <div class="sidebar-section">
+                <h3><i class="fas fa-plus-circle"></i> Add New Item</h3>
+                <div class="add-item-form">
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" class="form-control" id="itemName" placeholder="e.g., folder.png">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="category-select" id="itemCategory">
+                            <optgroup label="Icon">
+                                <option value="icon-food">Food</option>
+                                <option value="icon-info">Info</option>
+                                <option value="icon-art">Art</option>
+                            </optgroup>
+                            <optgroup label="Image">
+                                <option value="image-human">Human</option>
+                                <option value="image-animal">Animal</option>
+                                <option value="image-country">Country</option>
+                            </optgroup>
+                            <optgroup label="Video">
+                                <option value="video-news">News</option>
+                                <option value="video-promotion">Promotion</option>
+                                <option value="video-funny">Funny</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload Icon</label>
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload or drag & drop</p>
+                            <p class="small">PNG, JPG, SVG (max 5MB)</p>
+                            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                        </div>
+                        <div id="filePreview" style="display: none; margin-top: 0.5rem;"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="saveNewItem()">
+                            <i class="fas fa-save"></i> Save Item
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearForm()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Content Area -->
+        <section class="content">
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search items...">
+            </div>
+
+            <div class="stats">
+                <span class="results-count" id="resultsCount"></span>
+                <button class="clear-filters" id="clearFilters">
+                    <i class="fas fa-times"></i> Clear Filters
+                </button>
+            </div>
+
+            <div class="icon-grid" id="iconGrid">
+                <!-- Icons will be loaded here -->
+            </div>
+            
+            <div class="pagination" id="pagination"></div>
+        </section>
+    </main>
+
+    <!-- Preview Modal with Working Copy/Download -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="icon-preview" id="modalPreview" style="font-size: 4rem;"></div>
+            
+            <div style="margin: 1rem 0;">
+                <p><strong>Category:</strong> <span id="modalCategory"></span> / <span id="modalSubCategory"></span></p>
+                <p><strong>File:</strong> <span id="modalFileName"></span></p>
+                <p><strong>Size:</strong> <span id="modalFileSize"></span></p>
+            </div>
+
+            <h3>HTML Code</h3>
+            <div class="code-section">
+                <div class="code-preview" id="modalHtmlCode"></div>
+                <button class="copy-btn" onclick="copyToClipboard('html')">
+                    <i class="fas fa-copy"></i> Copy HTML
+                </button>
+            </div>
+
+            <h3>Markdown Code</h3>
+            <div class="code-section">
+                <div class="code-preview" id="modalMarkdownCode"></div>
+                <button class="copy-btn" onclick="copyToClipboard('markdown')">
+                    <i class="fas fa-copy"></i> Copy Markdown
+                </button>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="download-btn" onclick="downloadIcon()">
+                    <i class="fas fa-download"></i> Download Icon
+                </button>
+                <button class="btn btn-secondary" onclick="closeModal()">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Copied to clipboard!</div>
+
+    <script>
+        // Category structure
+        const categoryStructure = {
+            icon: {
+                name: 'Icon',
+                icon: 'fa-paint-brush',
+                subcategories: {
+                    food: { name: 'Food', icon: 'fa-utensils' },
+                    info: { name: 'Info', icon: 'fa-info-circle' },
+                    art: { name: 'Art', icon: 'fa-palette' }
+                }
+            },
+            image: {
+                name: 'Image',
+                icon: 'fa-image',
+                subcategories: {
+                    human: { name: 'Human', icon: 'fa-user' },
+                    animal: { name: 'Animal', icon: 'fa-paw' },
+                    country: { name: 'Country', icon: 'fa-flag' }
+                }
+            },
+            video: {
+                name: 'Video',
+                icon: 'fa-video',
+                subcategories: {
+                    news: { name: 'News', icon: 'fa-newspaper' },
+                    promotion: { name: 'Promotion', icon: 'fa-bullhorn' },
+                    funny: { name: 'Funny', icon: 'fa-laugh' }
+                }
+            }
+        };
+
+        // State
+        let state = {
+            items: [],
+            filteredItems: [],
+            currentMainCategory: 'all',
+            currentSubCategory: 'all',
+            searchQuery: '',
+            currentPage: 1,
+            pageSize: 12,
+            fileToUpload: null,
+            fileDataUrl: null,
+            currentPreviewItem: null
+        };
+
+        // DOM Elements
+        const elements = {
+            iconGrid: document.getElementById('iconGrid'),
+            searchInput: document.getElementById('searchInput'),
+            categoryList: document.getElementById('categoryList'),
+            pagination: document.getElementById('pagination'),
+            resultsCount: document.getElementById('resultsCount'),
+            clearFilters: document.getElementById('clearFilters'),
+            uploadArea: document.getElementById('uploadArea'),
+            fileInput: document.getElementById('fileInput'),
+            filePreview: document.getElementById('filePreview'),
+            itemName: document.getElementById('itemName'),
+            itemCategory: document.getElementById('itemCategory'),
+            previewModal: document.getElementById('previewModal'),
+            modalTitle: document.getElementById('modalTitle'),
+            modalPreview: document.getElementById('modalPreview'),
+            modalCategory: document.getElementById('modalCategory'),
+            modalSubCategory: document.getElementById('modalSubCategory'),
+            modalFileName: document.getElementById('modalFileName'),
+            modalFileSize: document.getElementById('modalFileSize'),
+            modalHtmlCode: document.getElementById('modalHtmlCode'),
+            modalMarkdownCode: document.getElementById('modalMarkdownCode'),
+            toast: document.getElementById('toast'),
+            totalCount: document.getElementById('totalCount')
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSampleItems();
+            setupEventListeners();
+            updateCategoryCounts();
+        });
+
+        function setupEventListeners() {
+            elements.searchInput.addEventListener('input', debounce(handleSearch, 300));
+            elements.clearFilters.addEventListener('click', clearFilters);
+            elements.uploadArea.addEventListener('click', () => elements.fileInput.click());
+            elements.uploadArea.addEventListener('dragover', (e) => e.preventDefault());
+            elements.uploadArea.addEventListener('drop', handleFileDrop);
+            elements.fileInput.addEventListener('change', handleFileSelect);
+        }
+
+        // Load sample items including folder.png
+        function loadSampleItems() {
+            const sampleItems = [
+                // Icon - Food
+                { id: 1, name: 'folder.png', mainCategory: 'image', subCategory: 'human', 
+                  file: null, fileData: null, type: 'image', 
+                  path: 'C:\\Users\\hp\\Music\\Projects\\Icon-png-file\\folder.png',
+                  size: '24 KB' },
+                { id: 2, name: 'pizza-icon.png', mainCategory: 'icon', subCategory: 'food', 
+                  type: '🍕', size: '12 KB' },
+                { id: 3, name: 'burger-icon.png', mainCategory: 'icon', subCategory: 'food', 
+                  type: '🍔', size: '15 KB' },
+                { id: 4, name: 'info-icon.png', mainCategory: 'icon', subCategory: 'info', 
+                  type: 'ℹ️', size: '8 KB' },
+                { id: 5, name: 'art-palette.png', mainCategory: 'icon', subCategory: 'art', 
+                  type: '🎨', size: '10 KB' },
+                { id: 6, name: 'user-profile.png', mainCategory: 'image', subCategory: 'human', 
+                  type: '👤', size: '18 KB' },
+                { id: 7, name: 'cat-icon.png', mainCategory: 'image', subCategory: 'animal', 
+                  type: '🐱', size: '22 KB' },
+                { id: 8, name: 'usa-flag.png', mainCategory: 'image', subCategory: 'country', 
+                  type: '🇺🇸', size: '14 KB' },
+                { id: 9, name: 'news-video.png', mainCategory: 'video', subCategory: 'news', 
+                  type: '📺', size: '30 KB' },
+                { id: 10, name: 'promotion-ad.png', mainCategory: 'video', subCategory: 'promotion', 
+                  type: '📢', size: '20 KB' },
+                { id: 11, name: 'funny-clip.png', mainCategory: 'video', subCategory: 'funny', 
+                  type: '😂', size: '25 KB' }
+            ];
+            
+            state.items = sampleItems;
+            state.filteredItems = [...sampleItems];
+            filterItems();
+        }
+
+        // Toggle main category
+        window.toggleMainCategory = function(mainCat) {
+            const subDiv = document.getElementById(`${mainCat}-subcategories`);
+            if (subDiv) {
+                subDiv.style.display = subDiv.style.display === 'none' ? 'block' : 'none';
+            }
+        };
+
+        // Filter by category
+        window.filterByCategory = function(mainCategory, subCategory) {
+            state.currentMainCategory = mainCategory;
+            state.currentSubCategory = subCategory;
+            state.currentPage = 1;
+            
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            if (mainCategory === 'all') {
+                document.querySelector('.category-item:first-child').classList.add('active');
+            } else {
+                event.target.closest('.category-item').classList.add('active');
+            }
+            
+            filterItems();
+        };
+
+        // Filter items
+        function filterItems() {
+            state.filteredItems = state.items.filter(item => {
+                const matchesSearch = state.searchQuery === '' || 
+                    item.name.toLowerCase().includes(state.searchQuery.toLowerCase());
+                
+                const matchesCategory = state.currentMainCategory === 'all' || 
+                    (item.mainCategory === state.currentMainCategory && 
+                     (state.currentSubCategory === 'all' || item.subCategory === state.currentSubCategory));
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            renderItems();
+            renderPagination();
+            updateStats();
+        }
+
+        // Render items
+        function renderItems() {
+            const start = (state.currentPage - 1) * state.pageSize;
+            const end = start + state.pageSize;
+            const pageItems = state.filteredItems.slice(start, end);
+            
+            if (pageItems.length === 0) {
+                elements.iconGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                        <i class="fas fa-search" style="font-size: 3rem; opacity: 0.5;"></i>
+                        <p>No items found</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            pageItems.forEach(item => {
+                const mainCat = categoryStructure[item.mainCategory];
+                const subCat = mainCat?.subcategories[item.subCategory];
+                
+                html += `
+                    <div class="icon-card">
+                        <span class="icon-category-badge">${subCat?.name || item.subCategory}</span>
+                        <div class="icon-preview">
+                            ${item.fileData ? 
+                                `<img src="${item.fileData}" alt="${item.name}">` : 
+                                `<div style="font-size: 3rem;">${item.type}</div>`
+                            }
+                        </div>
+                        <div class="icon-name">${item.name}</div>
+                        <div class="icon-category">${mainCat?.name || ''} / ${subCat?.name || ''}</div>
+                        <div class="icon-actions">
+                            <button class="icon-action-btn" onclick="previewItem(${item.id})">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="icon-action-btn" onclick="copyItemHtml(${item.id})">
+                                <i class="fas fa-code"></i> HTML
+                            </button>
+                            <button class="icon-action-btn" onclick="downloadItem(${item.id})">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            elements.iconGrid.innerHTML = html;
+        }
+
+        // Render pagination
+        function renderPagination() {
+            const totalPages = Math.ceil(state.filteredItems.length / state.pageSize);
+            
+            if (totalPages <= 1) {
+                elements.pagination.innerHTML = '';
+                return;
+            }
+            
+            let html = `
+                <button class="pagination-btn" onclick="changePage(${state.currentPage - 1})" 
+                        ${state.currentPage === 1 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<button class="pagination-btn ${i === state.currentPage ? 'active' : ''}" 
+                               onclick="changePage(${i})">${i}</button>`;
+            }
+            
+            html += `
+                <button class="pagination-btn" onclick="changePage(${state.currentPage + 1})" 
+                        ${state.currentPage === totalPages ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+            
+            elements.pagination.innerHTML = html;
+        }
+
+        window.changePage = function(page) {
+            state.currentPage = page;
+            renderItems();
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        function updateStats() {
+            elements.resultsCount.textContent = `Showing ${state.filteredItems.length} of ${state.items.length} items`;
+        }
+
+        function updateCategoryCounts() {
+            elements.totalCount.textContent = state.items.length;
+            
+            for (let mainCat in categoryStructure) {
+                for (let subCat in categoryStructure[mainCat].subcategories) {
+                    const count = state.items.filter(i => i.mainCategory === mainCat && i.subCategory === subCat).length;
+                    const element = document.getElementById(`count-${mainCat}-${subCat}`);
+                    if (element) element.textContent = count;
+                }
+            }
+        }
+
+        function handleSearch() {
+            state.searchQuery = elements.searchInput.value;
+            state.currentPage = 1;
+            filterItems();
+        }
+
+        function clearFilters() {
+            state.searchQuery = '';
+            state.currentMainCategory = 'all';
+            state.currentSubCategory = 'all';
+            state.currentPage = 1;
+            elements.searchInput.value = '';
+            
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector('.category-item:first-child').classList.add('active');
+            
+            filterItems();
+        }
+
+        function handleFileDrop(e) {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            processFile(file);
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            processFile(file);
+        }
+
+        function processFile(file) {
+            if (file && file.type.startsWith('image/')) {
+                state.fileToUpload = file;
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    state.fileDataUrl = e.target.result;
+                    elements.uploadArea.style.borderColor = 'var(--success)';
+                    elements.uploadArea.innerHTML = `
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        <p>${file.name} (${(file.size / 1024).toFixed(1)} KB)</p>
+                        <p class="small">Click to change</p>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Save new item with working file handling
+        window.saveNewItem = function() {
+            const name = elements.itemName.value.trim();
+            const category = elements.itemCategory.value;
+            
+            if (!name) {
+                alert('Please enter an item name');
+                return;
+            }
+            
+            const [mainCategory, subCategory] = category.split('-');
+            
+            const newItem = {
+                id: Date.now(),
+                name: name,
+                mainCategory: mainCategory,
+                subCategory: subCategory,
+                file: state.fileToUpload,
+                fileData: state.fileDataUrl,
+                type: state.fileDataUrl ? 'image' : '📦',
+                size: state.fileToUpload ? `${(state.fileToUpload.size / 1024).toFixed(1)} KB` : '0 KB'
+            };
+            
+            state.items.push(newItem);
+            updateCategoryCounts();
+            clearForm();
+            filterItems();
+            showToast('Item saved successfully!');
+        };
+
+        window.clearForm = function() {
+            elements.itemName.value = '';
+            elements.itemCategory.value = 'icon-food';
+            state.fileToUpload = null;
+            state.fileDataUrl = null;
+            elements.uploadArea.innerHTML = `
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Click to upload or drag & drop</p>
+                <p class="small">PNG, JPG, SVG (max 5MB)</p>
+            `;
+            elements.uploadArea.style.borderColor = '';
+        };
+
+        // Preview item with working copy/download
+        window.previewItem = function(id) {
+            const item = state.items.find(i => i.id === id);
+            if (!item) return;
+            
+            state.currentPreviewItem = item;
+            
+            const mainCat = categoryStructure[item.mainCategory];
+            const subCat = mainCat?.subcategories[item.subCategory];
+            
+            elements.modalTitle.textContent = item.name;
+            
+            if (item.fileData) {
+                elements.modalPreview.innerHTML = `<img src="${item.fileData}" alt="${item.name}" style="max-width: 128px;">`;
+            } else {
+                elements.modalPreview.innerHTML = `<div style="font-size: 4rem;">${item.type}</div>`;
+            }
+            
+            elements.modalCategory.textContent = mainCat?.name || item.mainCategory;
+            elements.modalSubCategory.textContent = subCat?.name || item.subCategory;
+            elements.modalFileName.textContent = item.name;
+            elements.modalFileSize.textContent = item.size || 'Unknown';
+            
+            // Generate proper HTML code
+            const htmlCode = item.fileData ? 
+                `<img src="${item.fileData}" alt="${item.name}" width="32" height="32">` :
+                `<i class="icon icon-${item.name.replace('.', '-')}"></i>`;
+            elements.modalHtmlCode.textContent = htmlCode;
+            
+            // Generate proper Markdown code
+            const markdownCode = item.fileData ?
+                `![${item.name}](${item.fileData})` :
+                `![${item.name}](#)`;
+            elements.modalMarkdownCode.textContent = markdownCode;
+            
+            elements.previewModal.classList.add('active');
+        };
+
+        // Copy to clipboard function
+        window.copyToClipboard = function(type) {
+            if (!state.currentPreviewItem) return;
+            
+            let text = '';
+            if (type === 'html') {
+                text = state.currentPreviewItem.fileData ?
+                    `<img src="${state.currentPreviewItem.fileData}" alt="${state.currentPreviewItem.name}" width="32" height="32">` :
+                    `<i class="icon icon-${state.currentPreviewItem.name.replace('.', '-')}"></i>`;
+            } else if (type === 'markdown') {
+                text = state.currentPreviewItem.fileData ?
+                    `![${state.currentPreviewItem.name}](${state.currentPreviewItem.fileData})` :
+                    `![${state.currentPreviewItem.name}](#)`;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`${type.toUpperCase()} copied to clipboard!`);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        };
+
+        // Download icon function
+        window.downloadIcon = function() {
+            if (!state.currentPreviewItem) return;
+            
+            const item = state.currentPreviewItem;
+            
+            if (item.fileData) {
+                // Download from data URL
+                const link = document.createElement('a');
+                link.href = item.fileData;
+                link.download = item.name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast(`Downloading ${item.name}`);
+            } else if (item.file) {
+                // Download from File object
+                const url = URL.createObjectURL(item.file);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = item.name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showToast(`Downloading ${item.name}`);
+            } else {
+                // Create a dummy download
+                const blob = new Blob(['Sample icon content'], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = item.name || 'icon.txt';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showToast(`Downloading ${item.name}`);
+            }
+        };
+
+        // Copy HTML directly from card
+        window.copyItemHtml = function(id) {
+            const item = state.items.find(i => i.id === id);
+            if (!item) return;
+            
+            const html = item.fileData ?
+                `<img src="${item.fileData}" alt="${item.name}" width="32" height="32">` :
+                `<i class="icon icon-${item.name.replace('.', '-')}"></i>`;
+            
+            navigator.clipboard.writeText(html).then(() => {
+                showToast('HTML copied to clipboard!');
+            });
+        };
+
+        // Download directly from card
+        window.downloadItem = function(id) {
+            const item = state.items.find(i => i.id === id);
+            if (!item) return;
+            
+            if (item.fileData) {
+                const link = document.createElement('a');
+                link.href = item.fileData;
+                link.download = item.name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast(`Downloading ${item.name}`);
+            } else {
+                // Create a dummy file for sample items
+                const content = `Sample icon: ${item.name}`;
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = item.name || 'icon.txt';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showToast(`Downloading ${item.name}`);
+            }
+        };
+
+        window.closeModal = function() {
+            elements.previewModal.classList.remove('active');
+            state.currentPreviewItem = null;
+        };
+
+        function showToast(message) {
+            elements.toast.textContent = message;
+            elements.toast.classList.add('show');
+            setTimeout(() => {
+                elements.toast.classList.remove('show');
+            }, 2000);
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target === elements.previewModal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

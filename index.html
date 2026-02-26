@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IconLibrary - Welcome</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --text: #0f172a;
+            --text-light: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --primary-light: #a5b4fc;
+            --bg: #0f172a;
+            --bg-alt: #1e293b;
+            --text: #f1f5f9;
+            --text-light: #94a3b8;
+            --border: #334155;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            --card-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--card-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .theme-toggle input {
+            display: none;
+        }
+
+        .toggle-switch {
+            width: 48px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 12px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        input:checked + .toggle-switch {
+            background: var(--primary);
+        }
+
+        input:checked + .toggle-switch::before {
+            transform: translateX(24px);
+        }
+
+        /* Welcome Page */
+        .welcome-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
+            padding: 2rem;
+        }
+
+        .welcome-card {
+            background: var(--card-bg);
+            border-radius: 32px;
+            box-shadow: var(--shadow);
+            max-width: 1200px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .welcome-header {
+            padding: 3rem 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem 3rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-alt);
+            border-radius: 20px;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .stats-section {
+            display: flex;
+            justify-content: space-around;
+            padding: 3rem;
+            background: var(--bg-alt);
+            border-radius: 32px;
+            margin: 0 3rem 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            margin-left: 1rem;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .welcome-title {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+            }
+            
+            .stats-section {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .cta-section .btn {
+                display: block;
+                margin: 1rem 0;
+            }
+            
+            .btn-outline {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Theme Toggle -->
+    <label class="theme-toggle">
+        <input type="checkbox" id="themeToggle">
+        <span class="toggle-switch"></span>
+        <span id="themeLabel">Light Mode</span>
+    </label>
+
+    <!-- Welcome Content -->
+    <div class="welcome-container">
+        <div class="welcome-card">
+            <div class="welcome-header">
+                <div class="welcome-icon">
+                    <i class="fas fa-icons"></i>
+                </div>
+                <h1 class="welcome-title">IconLibrary</h1>
+                <p class="welcome-subtitle">Your Ultimate Icon Management System</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Upload Icons</h3>
+                    <p class="feature-description">Upload and manage your icon collection with ease</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h3 class="feature-title">Edit & Organize</h3>
+                    <p class="feature-description">Edit, categorize, and organize your icons</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Admin Protected</h3>
+                    <p class="feature-description">Secure admin access for file management</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h3 class="feature-title">Light & Dark Mode</h3>
+                    <p class="feature-description">Switch themes for comfortable viewing</p>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalIconsStat">0</div>
+                    <div class="stat-label">Total Icons</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="categoriesStat">9</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="adminsStat">1</div>
+                    <div class="stat-label">Admin</div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <a href="admin.html" class="btn btn-primary">
+                    <i class="fas fa-lock"></i> Admin Login
+                </a>
+                <a href="library.html" class="btn btn-outline">
+                    <i class="fas fa-eye"></i> Browse Library
+                </a>
+            </div>
+
+            <div class="footer">
+                <p>&copy; 2024 IconLibrary. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeLabel = document.getElementById('themeLabel');
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        themeToggle.checked = savedTheme === 'dark';
+        themeLabel.textContent = savedTheme === 'dark' ? 'Dark Mode' : 'Light Mode';
+
+        themeToggle.addEventListener('change', () => {
+            const theme = themeToggle.checked ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            themeLabel.textContent = themeToggle.checked ? 'Dark Mode' : 'Light Mode';
+        });
+
+        // Load stats from localStorage
+        function loadStats() {
+            const icons = JSON.parse(localStorage.getItem('icons')) || [];
+            document.getElementById('totalIconsStat').textContent = icons.length;
+        }
+
+        loadStats();
+    </script>
+</body>
+</html>
